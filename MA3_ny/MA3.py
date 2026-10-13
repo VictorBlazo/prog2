@@ -16,7 +16,7 @@ from numba import njit
 
 # Exc1
 def approximate_pi(n):
-    # n is the number of points
+
     # n is the number of points
     inside_x, inside_y = [], []
     outside_x, outside_y = [], []
@@ -31,7 +31,7 @@ def approximate_pi(n):
             outside_y.append(y)
             
     pi_approx = 4 * len(inside_x) / n
-    print(f"Approximation av pi för n={n}: {pi_approx}")
+    print(f"Approximation off pi for n={n}: {pi_approx}")
     
     # Skapa och spara figur
     plt.figure(figsize=(5, 5))
@@ -72,9 +72,9 @@ def sphere_volume_numba(n:int, d:int)->float:
     # n is the number of points
     # d is the number of dimensions of the sphere
     inside = 0
-    for _ in range(n):
+    for i in range(n):
         r_squared = 0.0
-        for _ in range(d):
+        for j in range(d):
             r_squared += random.uniform(-1, 1)**2
         if r_squared <= 1.0:
             inside += 1
@@ -118,31 +118,47 @@ def main():
     # Exc2
     n = 100000
     d = 2
-    sphere_volume(n, d)
+    approx_vol = sphere_volume(n, d)
+    print(f"Approximation (d={d}): {approx_vol}")
     print(f"Actual volume of {d} dimentional sphere = {hypersphere_exact(n,d)}")
 
     n = 100000
     d = 11
-    sphere_volume(n, d)
+    approx_vol = sphere_volume(n, d)
+    print(f"Approximation (d={d}): {approx_vol}")
     print(f"Actual volume of {d} dimentional sphere = {hypersphere_exact(n,d)}")
 
     # Exc3
     n = 1000000
     d = 11
+    
+    # 1. Vanlig sekventiell (som du redan gjort)
     start = pc()
     sphere_volume(n, d)
     stop = pc()
-    print(f"Exc3: Sequential time of {d} and {n}: {stop-start}")
-    print("What is numba time?")
+    print(f"Exc3: Vanlig Python tog: {stop-start} sekunder")
+
+    # 2. Numba (måste köras 3 gånger för att se skillnaden)
+    # Förutsätter att du har skapat en funktion med @njit som heter t.ex. sphere_volume_numba
+    start = pc()
+    sphere_volume_numba(n, d)
+    print(f"Numba körning 1: {pc()-start} sekunder")
+    
+    start = pc()
+    sphere_volume_numba(n, d)
+    print(f"Numba körning 2: {pc()-start} sekunder")
+    
+    start = pc()
+    sphere_volume_numba(n, d)
+    print(f"Numba körning 3: {pc()-start} sekunder")
 
     # Exc4
     n = 1000000
     d = 11
     start = pc()
-    sphere_volume(n, d)
+    sphere_volume_parallel(n, d)
     stop = pc()
-    print(f"Exc4: Sequential time of {d} and {n}: {stop-start}")
-    print("What is parallel time?")
+    print(f"Exc4: Parallell time of {d} and {n}: {stop-start}")
 
     
     
