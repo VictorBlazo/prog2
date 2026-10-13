@@ -1,6 +1,6 @@
 """ MA3.py
 
-Student:
+Student: Victor Johansson Blazevic
 Mail:
 Reviewed by:
 Date reviewed:
